@@ -279,7 +279,7 @@ void ICM_GetGyro(void)
 
 int32_t I2C_Init(void)
 {
-    int32_t status = IC_I2C_SUCCESS;
+    int32_t status = IO_I2C_SUCCESS;
 
 	if ((i2c_fd_1 = open(I2C_BUS_1, O_RDWR)) < 0)
     {
