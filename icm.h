@@ -1,9 +1,10 @@
 #define IO_I2C_SUCCESS                      0
 #define IO_I2C_ERROR                       -1
-#define IO_I2C_ERROR_INIT                  -2
-#define IO_I2C_ERROR_IOCTL                 -3
-#define IO_I2C_ERROR_WRITE                 -4
-#define IO_I2C_ERROR_READ                  -5
+#define IO_I2C_ERROR_OPEN                  -2
+#define IO_I2C_ERROR_INIT                  -3
+#define IO_I2C_ERROR_IOCTL                 -4
+#define IO_I2C_ERROR_WRITE                 -5
+#define IO_I2C_ERROR_READ                  -6
 
 #define HWLIB_SUCCESS                       0
 #define HWLIB_ERROR                        -1
@@ -25,6 +26,6 @@ void ICM_SetPwrMgmt1(uint8_t PwrMgmt1);
 void ICM_GetAll(void);
 void ICM_GetGyro(void);
 
-void I2C_Init(void);
+int32_t I2C_Init(void);
 int32_t I2C_Read_ICM(uint8_t address, uint8_t reg,void *rx_buffer, uint8_t len);
 int32_t I2C_Write_ICM(uint8_t address, uint8_t reg, void *tx_buffer, uint8_t len);

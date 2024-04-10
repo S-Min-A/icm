@@ -26,14 +26,14 @@ static int32_t i2c_fd_1;
 
 static const uint8_t ICM_CMD_TBL[ICM_CMD_COUNT][2] = {
 //	{/*	Name										*/		 reg, 	  len}
-	{/*	ICM_CONFIG									*/		0x1A,		1},
-    {/*	ICM_GYRO_CONFIG								*/		0x1B,		1},
 	{/*	ICM_TEMP_OUT    							*/		0x41,		2},
 	{/*	ICM_GYRO_XOUT							    */		0x43,		2},
 	{/*	ICM_GYRO_YOUT								*/		0x45,		2},
     {/*	ICM_GYRO_ZOUT								*/		0x47,		2},
-    {/*	ICM_PWR_MGMT_1								*/		0x6B,		1},
 	{/*	ICM_WHO_AM_I								*/		0x75,		1},
+	{/*	ICM_CONFIG									*/		0x1A,		1},
+    {/*	ICM_GYRO_CONFIG								*/		0x1B,		1},
+    {/*	ICM_PWR_MGMT_1								*/		0x6B,		1},
 };
 
 int main(void)
@@ -59,10 +59,6 @@ void Command(void)
 		{
 			ICM_GetTempOut();
 		}
-		else if (strcmp(command, "/ICM_GetWhoAmI") == 0)
-		{
-			ICM_GetWhoAmI();
-		}
         else if (strcmp(command, "/ICM_GetGyroXout") == 0)
 		{
 			ICM_GetGyroXout();
@@ -74,6 +70,10 @@ void Command(void)
         else if (strcmp(command, "/ICM_GetGyroZout") == 0)
 		{
 			ICM_GetGyroZout();
+		}
+		else if (strcmp(command, "/ICM_GetWhoAmI") == 0)
+		{
+			ICM_GetWhoAmI();
 		}
         
 		else if (strcmp(command, "/ICM_SetConfig") == 0)
@@ -277,9 +277,16 @@ void ICM_GetGyro(void)
 	}
 }
 
-void I2C_Init(void)
+int32_t I2C_Init(void)
 {
-    i2c_fd_1 = open(I2C_BUS_1, O_RDWR);
+    int32_t status = IC_I2C_SUCCESS;
+
+	if ((i2c_fd_1 = open(I2C_BUS_1, O_RDWR)) < 0)
+    {
+        status |= IO_I2C_ERROR_OPEN;
+    }
+
+	return status;
 }
 
 int32_t I2C_Read_ICM(uint8_t address, uint8_t reg, void *rx_buffer, uint8_t len)
